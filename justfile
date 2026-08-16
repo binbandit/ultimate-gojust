@@ -194,7 +194,7 @@ dev: deps
 
 # Install the application
 install: build
-    {{go}} install -tags '{{all_tags}}' -ldflags '{{ld_flags}}' ./main
+    {{go}} install -tags '{{all_tags}}' -ldflags '{{ld_flags}}' {{main_dir}}
 
 # Generate code
 generate:
@@ -256,7 +256,7 @@ build-all:
             -tags '{{all_tags}}' \
             -ldflags '{{ld_flags}}' \
             -o "$output" \
-            ./main
+            {{main_dir}}
 
         tar czf "$output.tar.gz" "$output"
         rm -f "$output"
