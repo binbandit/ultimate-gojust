@@ -98,6 +98,8 @@ The Justfile assumes the following project structure:
 └── justfile
 ```
 
+The default entrypoint directory is `main/`. For Cobra-style projects that keep the entrypoint at the repository root, set `MAIN_DIR=.` in `.env` so build/run/test recipes use `main.go` instead of `main/main.go`. Example root layout: `main.go`, `cmd/`, `internal/`, and `justfile`.
+
 ## 🎯 Common Commands
 
 ### Development
