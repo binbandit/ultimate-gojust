@@ -43,6 +43,7 @@ alias help := default
 
 # Project Settings
 # These can be overridden via environment variables or .env file
+main_dir := env_var_or_default("MAIN_DIR", "./main")
 project_name := env_var_or_default("PROJECT_NAME", "myapp")
 organization := env_var_or_default("ORGANIZATION", "myorg")
 description := "My Awesome Go Project"
@@ -177,7 +178,7 @@ build:
     {{go}} build \
         -ldflags '{{ld_flags}}' \
         -o {{bin_dir}}/{{project_name}} \
-        ./main
+        {{main_dir}}
 
 # Run the application
 run: build
@@ -193,7 +194,7 @@ dev: deps
 
 # Install the application
 install: build
-    {{go}} install -tags '{{all_tags}}' -ldflags '{{ld_flags}}' ./main
+    {{go}} install -tags '{{all_tags}}' -ldflags '{{ld_flags}}' {{main_dir}}
 
 # Generate code
 generate:
@@ -249,14 +250,14 @@ build-all:
         arch=$(echo $platform | cut -d/ -f2)
         arm=$(echo $platform | cut -d/ -f3)
         output="{{dist_dir}}/{{project_name}}-${os}-${arch}$([ "$os" = "windows" ] && echo ".exe")"
-        
+
         GOOS=$os GOARCH=$arch $([ "$arm" != "-" ] && echo "GOARM=$arm") \
         CGO_ENABLED={{CGO_ENABLED}} {{go}} build \
             -tags '{{all_tags}}' \
             -ldflags '{{ld_flags}}' \
             -o "$output" \
-            ./main
-        
+            {{main_dir}}
+
         tar czf "$output.tar.gz" "$output"
         rm -f "$output"
     done
